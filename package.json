@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "gatsby develop -p 3000 -H 0.0.0.0",
     "build": "gatsby build",
-    "lint": "eslint --ext .js --ext .jsx .",
+    "lint": "eslint --ext .js,.jsx .",
     "stylelint": "stylelint --fix 'src/**/*.js'",
     "test": "jest",
     "test:watch": "yarn test -- --watch",
@@ -54,9 +54,10 @@
   "bugs": {
     "url": "https://issues.jenkins-ci.org/secure/RapidBoard.jspa?rapidView=1&projectKey=WEBSITE&view=detail"
   },
-  "homepage": "http://plugins.jenkins-ci.org/",
+  "homepage": "https://plugins.jenkins.io/",
   "dependencies": {
     "@babel/core": "^7.9.0",
+    "@sentry/browser": "^5.17.0",
     "chart.js": "^2.9.3",
     "cheerio": "^1.0.0-rc.3",
     "classnames": "^2.2.6",
@@ -68,7 +69,6 @@
     "gatsby-plugin-postcss": "^2.2.3",
     "gatsby-plugin-react-helmet": "^3.2.4",
     "gatsby-plugin-robots-txt": "^1.5.0",
-    "gatsby-plugin-sentry": "^1.0.1",
     "gatsby-plugin-sharp": "^2.6.3",
     "gatsby-plugin-sitemap": "^2.3.4",
     "gatsby-source-filesystem": "^2.3.3",
@@ -87,6 +87,7 @@
     "react-chartjs-2": "^2.9.0",
     "react-helmet": "^6.0.0",
     "react-radio-group": "^3.0.3",
+    "react-time-ago": "^5.0.8",
     "reactstrap": "^8.4.1"
   },
   "devDependencies": {
@@ -101,7 +102,7 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-standard": "^4.0.1",
     "gatsby": "^2.20.25",
-    "gatsby-plugin-nprogress": "^2.2.3",
+    "gatsby-plugin-nprogress": "^2.3.4",
     "gatsby-source-custom-api": "^2.1.4",
     "husky": "^4.2.5",
     "identity-obj-proxy": "^3.0.0",

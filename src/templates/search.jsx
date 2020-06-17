@@ -15,6 +15,7 @@ import Filters from '../components/Filters';
 import ActiveFilters from '../components/ActiveFilters';
 import fetch from 'isomorphic-fetch';
 
+
 const doSearch = (data, setResults) => {
     const {categories, labels, page, query, sort} = data;
     const params = querystring.stringify({
@@ -61,6 +62,8 @@ function SearchPage({location}) {
         navigate(`/ui/search?${querystring.stringify(newData)}`);
         doSearch(newData, setResults);
     };
+
+    const searchPage = 'templates/search.jsx';
     
     React.useEffect(() => {
         const qs = location.search.replace(/^\?/, '');
@@ -74,14 +77,14 @@ function SearchPage({location}) {
     }, []);
 
     return (
-        <Layout id="searchpage">
+        <Layout id="searchpage" reportProblemRelativeSourcePath={searchPage} reportProblemUrl={`/ui/search?${querystring.stringify({query})}`} reportProblemTitle="Search">
             <SEO pathname={'/ui/search'} title="Search Results" />
 
             <div className="row d-flex">
                 {showFilter && (<div className="col-md-3 order-last order-md-first">
-                    <Filters 
+                    <Filters
                         showFilter={showFilter}
-                        showResults 
+                        showResults
                         sort={sort}
                         categories={categories}
                         labels={labels}
@@ -94,13 +97,13 @@ function SearchPage({location}) {
                 <div className={showFilter ? 'col-md-9' : 'offset-md-1 col-md-11'}>
                     <div className="row">
                         <div className={'col-md-9'}>
-                            <SearchBox 
+                            <SearchBox
                                 showFilter={showFilter}
                                 setShowFilter={setShowFilter}
                                 query={query}
-                                setQuery={setQuery} 
+                                setQuery={setQuery}
                                 handleOnSubmit={handleOnSubmit}
-                            /> 
+                            />
                         </div>
                         <div className={'col-md-3'}>
                             <Views view={view} setView={setView} />
@@ -120,7 +123,7 @@ function SearchPage({location}) {
                     </div>
                     <div className="view">
                         <div className="col-md-12">
-                            <SearchResults 
+                            <SearchResults
                                 showFilter={showFilter}
                                 showResults
                                 view={view}
@@ -136,7 +139,7 @@ function SearchPage({location}) {
     );
 }
 
-SearchPage.propTypes = {   
+SearchPage.propTypes = {
     location: PropTypes.object.isRequired
 };
 

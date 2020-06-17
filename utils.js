@@ -16,7 +16,11 @@ async function makeReactLayout() {
         'import React from \'react\';',
         'import { Helmet } from \'react-helmet\';',
         'import SiteVersion from \'./components/SiteVersion\';',
-        'import \'./layout.css\';'
+        'import ReportAProblem from \'./components/ReportAProblem\';',
+        'import \'./layout.css\';',
+        'import JavascriptTimeAgo from \'javascript-time-ago\';',
+        'import en from \'javascript-time-ago/locale/en\';',
+        'JavascriptTimeAgo.locale(en)'
     ];
 
     const cssLines = [
@@ -25,6 +29,8 @@ async function makeReactLayout() {
         '@import \'./styles/roboto-fonts.css\';',
         '@import \'./styles/base.css\';',
         '@import \'./styles/font-icons.css\';',
+        '@import \'./styles/tooltip.css\';',
+        '@import \'react-time-ago/Tooltip.css\';',
     ];
 
     console.info(`Downloading header file from '${headerUrl}'`);
@@ -73,6 +79,7 @@ async function makeReactLayout() {
 
     $('.nav-link[href="https://plugins.jenkins.io/"]').attr('href', '/');
     $('#grid-box').append('{children}');
+    $('#footer .col-md-4').prepend('<ReportAProblem />');
     $('#creativecommons').append('<SiteVersion />');
     $('link[rel="stylesheet"]').each((_, elm) => {
         elm = $(elm);
@@ -89,8 +96,8 @@ async function makeReactLayout() {
     };
 
     const handleNode = (node, indent = 0) => {
-        
         const prefix = ''.padStart(6+indent);
+        
         if (node.name === 'link' && node.attribs && node.attribs.rel === 'stylesheet') {
             delete node.attribs.crossorigin;
             node.attribs.type = 'text/css';
@@ -121,17 +128,22 @@ async function makeReactLayout() {
             node.children.forEach(child => handleNode(child, indent+2));
             jsxLines.push(`${prefix}</${node.name}>`);
         } else {
+            let tempAttrs = attrs;
+
             if (!node.name) {
                 console.log(node);
             }
             if (node.name === 'siteversion') {
                 node.name = 'SiteVersion';
+            } else if (node.name === 'reportaproblem') {
+                tempAttrs = 'reportProblemUrl={reportProblemUrl} reportProblemTitle={reportProblemTitle} reportProblemRelativeSourcePath={reportProblemRelativeSourcePath}';
+                node.name = 'ReportAProblem';
             }
-            jsxLines.push(`${prefix}<${node.name} ${attrs} />`);
+            jsxLines.push(`${prefix}<${node.name} ${tempAttrs} />`);
         }
     };
 
-    jsxLines.push('export default function Layout({ children, id }) {');
+    jsxLines.push('export default function Layout({ children, id, reportProblemUrl, reportProblemTitle, reportProblemRelativeSourcePath}) {');
     jsxLines.push('  return (');
     jsxLines.push('    <div id={id}>');
     jsxLines.push('      <Helmet>');
